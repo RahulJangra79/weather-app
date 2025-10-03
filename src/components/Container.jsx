@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "./Container.css";
 import axios from "axios";
 
-// Import your custom icons
 import clearIcon from "../assets/clear.svg";
 import cloudsIcon from "../assets/clouds.svg";
 import rainIcon from "../assets/rain.svg";
@@ -10,9 +9,8 @@ import snowIcon from "../assets/snow.svg";
 import thunderIcon from "../assets/thunder.svg";
 import mistIcon from "../assets/mist.svg";
 
-const API_KEY = "cd6b63922bf69352630b07b3ec50cc05";
+const API_KEY = import.meta.env.VITE_API_KEY;
 
-// Mapping OpenWeather conditions to your icons
 const weatherIcons = {
   Clear: clearIcon,
   Clouds: cloudsIcon,
@@ -31,42 +29,12 @@ const Container = () => {
   const [weather, setWeather] = useState(null);
   const [error, setError] = useState("");
 
-  // const fetchWeather = async () => {
-  //   if (!city) {
-  //     setError("Please enter a city name");
-  //     return;
-  //   }
-  //   try {
-  //     setError("");
-  //     const response = await fetch(
-  //       `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`
-  //     );
-  //     const data = await response.json();
-
-  //     if (data.cod === 200 || data.cod === "200") {
-  //       setWeather({
-  //         temp: data.main.temp,
-  //         desc: data.weather[0].description,
-  //         main: data.weather[0].main,
-  //         icon: weatherIcons[data.weather[0].main] || defaultIcon,
-  //       });
-  //     } else {
-  //       setError(data.message || "City not found!");
-  //       setWeather(null);
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //     setError("Something went wrong!");
-  //   }
-  // };
-
   const fetchWeather = async () => {
     if (!city) {
       setError("Please enter a city name");
       return;
     }
 
-    // Create a ref to store the AbortController
     const controller = new AbortController();
 
     try {
@@ -80,7 +48,7 @@ const Container = () => {
             units: "metric",
             appid: API_KEY,
           },
-          signal: controller.signal, // Pass the signal to Axios
+          signal: controller.signal, 
         }
       );
 
@@ -109,7 +77,6 @@ const Container = () => {
       }
     }
 
-    // Return controller so you can cancel request from outside if needed
     return controller;
   };
 
