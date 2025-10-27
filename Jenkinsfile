@@ -36,12 +36,14 @@ pipeline {
     }
 
     stage('Deploy Locally') {
-      steps {
-        bat '''
-          docker rm -f vite-weather || exit 0
-          docker run -d --name vite-weather -p 8000:8000 %IMAGE_NAME%
-        '''
-      }
+        steps {
+            bat '''
+                FOR /F "tokens=*" %%i IN ('docker ps -q --filter "publish=8000"') DO docker rm -f %%i
+                docker rm -f vite-weather || exit 0
+                docker run -d --name vite-weather -p 8000:8000 sheetal79/vite-weather-app
+                '''
+        }
     }
+
   }
 }
